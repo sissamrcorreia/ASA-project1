@@ -8,21 +8,17 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
-//#include <stdio.h>
-//#include <string.h>
+
 using namespace std;
 
-// void print valor máximo que pode ser obtido a partir da chapa dada como input
-
-// void cleanupMemory() { delete[] pieces;}
-
-//uma peça de placa
+// Uma peça de placa
 struct Piece {
     int width;
     int height;
     int price;
 };
 
+// Função para maximizar o valor que pode ser obtido a partir da chapa dada como entrada
 int maximizeValue(int X, int Y, vector<Piece>& pieces) {
     vector<int> dp(X + 1, 0);
 
@@ -41,22 +37,12 @@ int maximizeValue(int X, int Y, vector<Piece>& pieces) {
 }
 
 int main() {
-    // ler dimensoes da placa
     int X, Y;
     std::cin >> X >> Y;
 
-    // ler numero de tipos de pecas
     int N;
     std::cin >> N;
 
-    /* criar um vetor para armazenar as pecas
-    std::vector<int> pieces(N);
-
-    for (int i = 0; i < N; ++i) {
-        int ai, bi, pi;
-        std::cin >> ai >> bi >> pi;
-
-    }*/
     vector<Piece> pieces(N);
     for (int i = 0; i < N; ++i) {
         cin >> pieces[i].width >> pieces[i].height >> pieces[i].price;
