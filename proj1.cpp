@@ -25,21 +25,21 @@ int maximizeValue(int X, int Y, vector<Piece>& pieces) {
     for (const auto& piece : pieces) {
         if ((piece.width <= X && piece.height <= Y) || (piece.width <= Y && piece.height <= X)) {
 
-        for (int i = piece.width; i <= X; ++i) {
+        for (int i = piece.width; i <= X; i++) {
             dp[i] = max(dp[i], dp[i - piece.width] + piece.price);
 
             // Verifica se é possível usar múltiplas cópias da mesma peça
-            for (int k = 1; k * piece.height <= Y; ++k) {
+            for (int k = 1; k * piece.height <= Y; k++) {
                 dp[i] = max(dp[i], dp[i - piece.width] + k * piece.price);
             }
         }
 
         // Considera a peça rodada
         if (piece.height >= X) {
-            for (int i = piece.height; i <= X; ++i) {
+            for (int i = piece.height; i <= X; i++) {
                 dp[i] = max(dp[i], dp[i - piece.height] + piece.price);
 
-                for (int k = 1; k * piece.width <= Y; ++k) {
+                for (int k = 1; k * piece.width <= Y; k++) {
                     dp[i] = max(dp[i], dp[i - piece.height] + k * piece.price);
                 }
             }
