@@ -23,6 +23,8 @@ int maximizeValue(int X, int Y, vector<Piece>& pieces) {
     vector<int> dp(X + 1, 0);
 
     for (const auto& piece : pieces) {
+        if ((piece.width <= X && piece.height <= Y) || (piece.width <= Y && piece.height <= X)) {
+
         for (int i = piece.width; i <= X; ++i) {
             dp[i] = max(dp[i], dp[i - piece.width] + piece.price);
 
@@ -32,8 +34,8 @@ int maximizeValue(int X, int Y, vector<Piece>& pieces) {
             }
         }
 
-        // Se a peça for rotacionável, considera a peça girada
-        if (piece.height <= X) {
+        // Considera a peça rodada
+        if (piece.height >= X) {
             for (int i = piece.height; i <= X; ++i) {
                 dp[i] = max(dp[i], dp[i - piece.height] + piece.price);
 
@@ -42,7 +44,7 @@ int maximizeValue(int X, int Y, vector<Piece>& pieces) {
                 }
             }
         }
-        
+        }
     }
 
     return dp[X];
