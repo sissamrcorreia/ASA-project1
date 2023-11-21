@@ -31,6 +31,18 @@ int maximizeValue(int X, int Y, vector<Piece>& pieces) {
                 dp[i] = max(dp[i], dp[i - piece.width] + k * piece.price);
             }
         }
+
+        // Se a peça for rotacionável, considera a peça girada
+        if (piece.height <= X) {
+            for (int i = piece.height; i <= X; ++i) {
+                dp[i] = max(dp[i], dp[i - piece.height] + piece.price);
+
+                for (int k = 1; k * piece.width <= Y; ++k) {
+                    dp[i] = max(dp[i], dp[i - piece.height] + k * piece.price);
+                }
+            }
+        }
+        
     }
 
     return dp[X];
