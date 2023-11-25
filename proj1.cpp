@@ -11,39 +11,33 @@
 
 using namespace std;
 
-// Uma peça de placa
-struct Piece {
-    int width;
-    int height;
-    int price;
-};
-
 // Função para maximizar o valor que pode ser obtido a partir da chapa dada como entrada
-int maximizeValue(int X, int Y, vector<Piece>& pieces) {
+int maximizeValue(int X, int Y, vector<vector<int>>& pieces) {
     vector<int> dp(X + 1, 0);
 
     for (const auto& piece : pieces) {
-        if ((piece.width <= X && piece.height <= Y) || (piece.width <= Y && piece.height <= X)) {
+        int pieceWidth = piece[0];
+        int pieceHeight = piece[1];
+        int piecePrice = piece[2];
 
-        for (int i = piece.width; i <= X; i++) {
-            dp[i] = max(dp[i], dp[i - piece.width] + piece.price);
+        if ((pieceWidth <= X && pieceHeight <= Y) || (pieceWidth <= Y && pieceHeight <= X)) {
+            for (int i = pieceWidth; i <= X; i++) {
+                dp[i] = max(dp[i], dp[i - pieceWidth] + piecePrice);
 
-            // Verifica se é possível usar múltiplas cópias da mesma peça
-            for (int k = 1; k * piece.height <= Y; k++) {
-                dp[i] = max(dp[i], dp[i - piece.width] + k * piece.price);
-            }
-        }
-
-        // Considera a peça rodada
-        if (piece.height >= X) {
-            for (int i = piece.height; i <= X; i++) {
-                dp[i] = max(dp[i], dp[i - piece.height] + piece.price);
-
-                for (int k = 1; k * piece.width <= Y; k++) {
-                    dp[i] = max(dp[i], dp[i - piece.height] + k * piece.price);
+                // Verifica se é possível usar múltiplas cópias da mesma peça
+                for (int k = 1; k * pieceHeight <= Y; k++) {
+                    dp[i] = max(dp[i], dp[i - pieceWidth] + k * piecePrice);
                 }
             }
-        }
+
+            // Considera a peça rodada
+            if (pieceHeight <= X) {
+                for (int i = pieceHeight; i <= X; i++) {
+                    for (int j = 1; j * pieceWidth <= Y; j++) {
+                        dp[i] = max(dp[i], dp[i - pieceHeight] + j * piecePrice);
+                    }
+                }
+            }
         }
     }
 
@@ -52,19 +46,19 @@ int maximizeValue(int X, int Y, vector<Piece>& pieces) {
 
 int main() {
     int X, Y;
-    std::cin >> X >> Y;
+    cin >> X >> Y;
 
     int N;
-    std::cin >> N;
+    cin >> N;
 
-    vector<Piece> pieces(N);
+    vector<vector<int>> pieces(N, vector<int>(3));
     for (int i = 0; i < N; ++i) {
-        cin >> pieces[i].width >> pieces[i].height >> pieces[i].price;
+        cin >> pieces[i][0] >> pieces[i][1] >> pieces[i][2];
     }
 
     int result = maximizeValue(X, Y, pieces);
 
     cout << result << endl;
-    
+
     return 0;
 }
