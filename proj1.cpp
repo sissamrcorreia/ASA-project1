@@ -46,19 +46,19 @@ int maximizeValue(int X, int Y, vector<vector<int>>& pieces) {
 
 int main() {
     int X, Y;
-    cin >> X >> Y;
+    scanf("%d %d", &X, &Y);
 
     int N;
-    cin >> N;
+    scanf("%d", &N);
 
     vector<vector<int>> pieces(N, vector<int>(3));
     for (int i = 0; i < N; ++i) {
-        cin >> pieces[i][0] >> pieces[i][1] >> pieces[i][2];
+        scanf("%d %d %d", &pieces[i][0], &pieces[i][1], &pieces[i][2]);
     }
 
     int result = maximizeValue(X, Y, pieces);
 
-    cout << result << endl;
+    printf("%d\n", result);
 
     return 0;
 }
