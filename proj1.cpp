@@ -12,36 +12,28 @@
 using namespace std;
 
 // Função para maximizar o valor que pode ser obtido a partir da chapa dada como entrada
-int maximizeValue(int X, int Y, vector<vector<int>>& pieces) {
-    vector<int> dp(X + 1, 0);
+int maximizeValue(int X, int Y, vector<vector<int>>& dp2) {
+    for (int i = 1; i <= X; i++) {
+        for (int j = 1; j <= Y; j++) {
+            // Caso 1: Não cortar a chapa
+            dp2[i][j] = max(dp2[i][j], dp2[i - 1][j]);
 
-    for (const auto& piece : pieces) {
-        int pieceWidth = piece[0];
-        int pieceHeight = piece[1];
-        int piecePrice = piece[2];
+            // Caso 2: Não cortar a chapa
+            dp2[i][j] = max(dp2[i][j], dp2[i][j - 1]);
 
-        if ((pieceWidth <= X && pieceHeight <= Y) || (pieceWidth <= Y && pieceHeight <= X)) {
-            for (int i = pieceWidth; i <= X; i++) {
-                dp[i] = max(dp[i], dp[i - pieceWidth] + piecePrice);
-
-                // Verifica se é possível usar múltiplas cópias da mesma peça
-                for (int k = 1; k * pieceHeight <= Y; k++) {
-                    dp[i] = max(dp[i], dp[i - pieceWidth] + k * piecePrice);
-                }
+            // Caso 3: Cortar a chapa horizontalmente
+            for (int k = 0; k < i; k++) {
+                dp2[i][j] = max(dp2[i][j], dp2[k][j] + dp2[i - k][j]);
             }
 
-            // Considera a peça rodada
-            if (pieceHeight <= X) {
-                for (int i = pieceHeight; i <= X; i++) {
-                    for (int j = 1; j * pieceWidth <= Y; j++) {
-                        dp[i] = max(dp[i], dp[i - pieceHeight] + j * piecePrice);
-                    }
-                }
+            // Caso 4: Cortar a chapa verticalmente
+            for (int k = 0; k < j; k++) {
+                dp2[i][j] = max(dp2[i][j], dp2[i][k] + dp2[i][j - k]);
             }
         }
     }
 
-    return dp[X];
+    return dp2[X][Y];
 }
 
 int main() {
@@ -51,12 +43,25 @@ int main() {
     int N;
     scanf("%d", &N);
 
-    vector<vector<int>> pieces(N, vector<int>(3));
+    // Criar uma matriz representando a chapa grande e inicializar com zeros
+    vector<vector<int>> dp2(X + 1, vector<int>(Y + 1, 0));
+
+    // Preencher a matriz com os preços das peças
     for (int i = 0; i < N; ++i) {
-        scanf("%d %d %d", &pieces[i][0], &pieces[i][1], &pieces[i][2]);
+        int pieceWidth, pieceHeight, piecePrice;
+        scanf("%d %d %d", &pieceWidth, &pieceHeight, &piecePrice);
+
+        if ((pieceWidth <= X && pieceHeight <= Y)) {
+            // Se a peça cabe na chapa, preencher as posições correspondentes com o preço
+            dp2[pieceWidth][pieceHeight] = piecePrice;
+        }
+        // Peça rodada
+        if ((pieceWidth <= Y && pieceHeight <= X)) {
+            dp2[pieceHeight][pieceWidth] = piecePrice;
+        }
     }
 
-    int result = maximizeValue(X, Y, pieces);
+    int result = maximizeValue(X, Y, dp2);
 
     printf("%d\n", result);
 
