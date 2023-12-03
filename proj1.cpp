@@ -1,8 +1,8 @@
-// Projeto 1 - Analise de Sistemas de Algoritmos - 2023
+// Projeto 1 - Análise de Sistemas de Algoritmos - 2023
 
-// Grupo 2
-// Cecilia Correia - 106827
-// Luisa Fernandes - 102460
+// Grupo: AL002
+// Cecília Correia - 106827
+// Luísa Fernandes - 102460
 
 
 #include <iostream>
@@ -43,7 +43,7 @@ int main() {
     int N;
     scanf("%d", &N);
 
-    // Criar uma matriz representando a chapa grande e inicializar com zeros
+    // Criar uma matriz representando a chapa dada e inicializar com zeros
     vector<vector<int>> mtz(X + 1, vector<int>(Y + 1, 0));
 
     // Preencher a matriz com os preços das peças
